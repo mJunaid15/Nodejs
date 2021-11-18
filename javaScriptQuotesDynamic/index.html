@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quots</title>
+  </head>
+  <body>
+    <div id="quots"></div>
+    <div id="autor"></div>
+    <button onclick="getNewQuotes()">New Quotes</button>
+    <button onclick="tweetNow()">Tweet Now</button>
+
+    <script>
+      const quots = document.getElementById("quots");
+      const autor = document.getElementById("autor");
+
+      const tweetNow = () => {
+        let tweetPost = `https://twitter.com/intent/tweet?text=${quotesData.text}
+        \n 
+        by ${quotesData.author}`;
+        window.open(tweetPost);
+      };
+      let realData = "";
+      let quotesData = "";
+
+      const getNewQuotes = () => {
+        const rnum = Math.floor(Math.random() * 20);
+        console.log(rnum);
+        quotesData = realData[rnum];
+        quots.innerText = quotesData.text;
+
+        quotesData.author == null
+          ? (autor.innerText = "Unknown")
+          : (autor.innerText = quotesData.author);
+
+        // console.log(realData[rnum].text);
+      };
+      const getQuotes = async () => {
+        const api = "https://type.fit/api/quotes";
+        try {
+          let data = await fetch(api);
+          realData = await data.json();
+          // console.log(realData[0].text);
+          getNewQuotes();
+        } catch (error) {}
+      };
+      getQuotes();
+    </script>
+  </body>
+</html>
